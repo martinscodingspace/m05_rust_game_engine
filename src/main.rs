@@ -1,7 +1,7 @@
 /*****************************************************************************
 ***  IHK Rust Developer 2025/2026                                          ***
-***  m05_rust_game_engine                                                  ***
-***  Topic : Game-Engine für Spiel mit graphischer Darstellung             ***
+***  Projekt: m05_rust_game_engine                                         ***
+***  Topic  : Game-Engine für Spiel mit graphischer Darstellung            ***
 ***  Fälligkeit 01.02.2026 23:59                                           ***
 ***  written by the author Martin Hildebrand                               ***
 ***  Projekt-Postfach  :   m05_abschlussprojekt@turbofisch.de              ***
@@ -13,7 +13,10 @@
 ***  Diese Software steht unter folgender LIZENZ                           ***
 ***  GNU General Public License 3                                          ***
 ***  http://www.gnu.org/licenses/gpl-3.0.de.html                           ***
+******************************************************************************
+***  Größe Ausführbare Release-Version m05_rust_game_engine.exe :  892 KB  ***
 *****************************************************************************/
+
 //! 2.1 Game-Engine
 //! In dieser Aufgabe entwickelst du ein zweidimensionales Spiel oder eine kleine Game-
 //! Engine, auf deren Basis ein Spiel umgesetzt wird.
@@ -68,6 +71,61 @@
 //!
 //! Hinweis: Diese Aufgabe ist mittel bis schwer.
 
+
+//! **************************************************************************
+//! HINWEISE  ZUM  SPIEL  "SNACA"
+//!
+//! Beschreibung :
+//! Snaca ist eine Variante des berühmten Spieles aus dem Jahr 1976
+//! Geschrieben in der Programmiersprache Rust mit graphischer Darstellung
+//! mittels des Crates Macroquad, welches sich durch plattformübergreifende und
+//! bessere Überschaubarkeit auszeichnet. Es handelt sich um eine einfache
+//! API-Unterstützung f+r Grafiken, Text und auch Bilder.
+//! Die Beschreibung der in Macroquad verfügbaren Funktionen befinde sich hier:
+//! https://docs.rs/macroquad/latest/macroquad/
+//!
+//! Spielhinweise:
+//! Bei Snaca und den Snake-Varianten geht es darum, mittels Navigieren mit den
+//! vier Richtungs-Tasten die Futter-Bausteine aufzusammeln, welche den Rumpf der
+//! Schlange um jeweils ein Element verlängern.
+//!
+//! Im Willkommens-Menü hat der Spieler die Möglichkeit, seinen eigenen Namen
+//! einzutragen.
+//! Dies ist nicht unbedingt erforderlich, da auch anonymes Mitspielen ermöglicht
+//! wird.
+//! Der Buchstabe 'X' hat hier eine besondere Rolle, denn wird dieses Zeichen
+//! eingegeben, so ist der Name automatisch auf 'Kaa' gesetzt: die indische Python
+//! aus dem Dschungelbuch.
+//!
+//! Im Hintergrund wird die Datenbank mit dem Highscore geladen, welcher als
+//! Wertepaar in Form einer HashMap<key, value> in eine json-Datei als
+//! persistente Form gespeichert wird.
+//!
+//! Bei der allerersten Verwendung auf dem System wird die lokale Datenbank in Form
+//! der json-Datei abgespeichert.
+//!
+//! Die Schlange darf den äußeren Rand nicht überschreiten. In diesem irgendwann
+//! unweigerlich auftretenden Fall bei immer länger werdenden Schlange endet das
+//! aktuelle Spiel.
+//!
+//! Besonderheit ist hierbei das Level-Management, wobei nach jedem 10.
+//! Futterstein bzw. alle 1000 Punkte die Lauf- bzw. 'Kriech'-Geschwindkeit der
+//! Schlange sich erhöht.
+//!
+//! Nach dem Verlassen der Spielfläche wird der Name am Ende zusammen mit dem
+//! erreichten Punktestand ausgegeben.
+//! Sollte dieser höher sein als der bisherige Highscore, so wird direkt der alte
+//! Wert durch den neuen Wert ersetzt und dauerhaft lokal gespeichert.
+//!
+//! Im Falle einer gewünschten Unterbrechung kann die Leertase <SPACE> getätigt
+//! werden. Innerhalb eines Pausen-Menüs kann der Spieler der Anweisung auf
+//! Fortsetzung folgen, wobei der bereits erzielte Punktwert erhalten bleibt.
+//!
+//! Mit nur 892 KB Speicher-Größe ist die Release-Variante von
+//! m05_rust_game_engine schnell übertragen und leicht eingerichtet.
+//! **************************************************************************
+
+
 // Import der am häufigsten genutzen Funktionen vom Crate Macroquad
 use macroquad::prelude::*;
 // Import der doppelt verkettete Liste für effizientes Einfügen und Entfernen am Anfang und am Ende
@@ -108,6 +166,7 @@ async fn main() {
     } else {
         HashMap::new()
     };
+    // Ein Anfangs-Eintrag, wobei der Value später verglichen wird
     if db.len() == 0 {
         db.insert("Anonym".to_string(), 100);
     }
