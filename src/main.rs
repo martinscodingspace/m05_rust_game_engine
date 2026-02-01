@@ -108,6 +108,9 @@ async fn main() {
     } else {
         HashMap::new()
     };
+    if db.len() == 0 {
+        db.insert("Anonym".to_string(), 100);
+    }
 
     // Das Start-Menü mit Benutzereingabe vor Spielbeginn
     loop {
